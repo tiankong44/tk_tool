@@ -15,6 +15,8 @@ import java.io.Serializable;
  **/
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BaseRes<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     // 返回状态码
