@@ -45,8 +45,8 @@ public class LogAspect {
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof String) {
                 bf.append(args[i]);
-            } else if (args[i] instanceof JSONObject) {
-                bf.append(args[i].toString());
+            }  else if (args[i] instanceof Object) {
+                bf.append(JSONObject.toJSON(args[i]).toString());
             }
         }
         log.info(bf.toString());
@@ -88,8 +88,8 @@ public class LogAspect {
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof String) {
                 bf.append(args[i]);
-            } else if (args[i] instanceof JSONObject) {
-                bf.append(args[i].toString());
+            } else if (args[i] instanceof Object) {
+                bf.append(JSONObject.toJSON(args[i]).toString());
             }
         }
         log.info(bf.toString());

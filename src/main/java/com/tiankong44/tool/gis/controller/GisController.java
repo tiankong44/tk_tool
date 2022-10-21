@@ -1,12 +1,16 @@
 package com.tiankong44.tool.gis.controller;
 
 import com.tiankong44.tool.base.entity.BaseRes;
+import com.tiankong44.tool.gis.entity.Coordinate;
 import com.tiankong44.tool.gis.service.GisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * WGS84坐标系	地球坐标系，国际通用坐标系
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2022-10-21 21:45
  */
 @RestController("/gis")
+@Validated
 public class GisController {
     @Autowired
     GisService gisService;
@@ -29,8 +34,8 @@ public class GisController {
      */
     @RequestMapping("/WGS84ToGCJ02")
     @ResponseBody
-    public BaseRes WGS84ToGCJ02(@RequestBody String msg) {
-        return gisService.WGS84ToGCJ02(msg);
+    public BaseRes WGS84ToGCJ02(@RequestBody @Valid Coordinate coordinate) {
+        return gisService.WGS84ToGCJ02(coordinate);
     }
 
     /**
@@ -41,8 +46,8 @@ public class GisController {
      */
     @ResponseBody
     @RequestMapping("/GCJ02ToWGS84")
-    public BaseRes GCJ02ToWGS84(@RequestBody String msg) {
-        return gisService.GCJ02ToWGS84(msg);
+    public BaseRes GCJ02ToWGS84(@RequestBody @Valid Coordinate coordinate) {
+        return gisService.GCJ02ToWGS84(coordinate);
     }
 
     /**
