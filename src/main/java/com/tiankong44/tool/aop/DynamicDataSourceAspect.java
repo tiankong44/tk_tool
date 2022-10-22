@@ -1,7 +1,7 @@
 package com.tiankong44.tool.aop;
 
 import com.tiankong44.tool.config.db.DataSourceContextHolder;
-import com.tiankong44.tool.config.db.EnumDataSourceType;
+import com.tiankong44.tool.config.db.DataSourceTypeEnum;
 import com.tiankong44.tool.customAnnotation.TargetDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -31,7 +31,7 @@ public class DynamicDataSourceAspect {
             Method method = point.getTarget().getClass().getMethod(methodName, parameterTypes);
             TargetDataSource methodAnnotation = method.getAnnotation(TargetDataSource.class);
             methodAnnotation = methodAnnotation == null ? annotationOfClass : methodAnnotation;
-            EnumDataSourceType dataSourceType = methodAnnotation != null && methodAnnotation.value() != null ? methodAnnotation.value() : EnumDataSourceType.MASTER;
+            DataSourceTypeEnum dataSourceType = methodAnnotation != null && methodAnnotation.value() != null ? methodAnnotation.value() : DataSourceTypeEnum.MASTER;
             log.debug("use the "+dataSourceType.name()+ "database");
             DataSourceContextHolder.setDataSource(dataSourceType.name());
         } catch (NoSuchMethodException e) {

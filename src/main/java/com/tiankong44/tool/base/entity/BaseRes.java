@@ -1,9 +1,7 @@
 package com.tiankong44.tool.base.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -15,8 +13,6 @@ import java.io.Serializable;
  **/
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class BaseRes<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     // 返回状态码
@@ -55,14 +51,12 @@ public class BaseRes<T> implements Serializable {
 
     public static BaseRes failure(ResultStatus resultStatus, String message) {
         return BaseRes.builder()
-                
                 .code(resultStatus.getCode())
                 .message(message).build();
     }
 
     public static BaseRes failure(ResultStatus resultStatus, ResultStatus code) {
         return BaseRes.builder()
-                
                 .code(code.getCode())
                 .message(code.getMessage()).build();
     }

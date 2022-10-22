@@ -2,10 +2,12 @@ package com.tiankong44.tool.exception;
 
 import com.tiankong44.tool.base.entity.BaseRes;
 import com.tiankong44.tool.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.ConstraintViolationException;
 
@@ -14,6 +16,8 @@ import javax.validation.ConstraintViolationException;
  * @date 2022-10-21 22:39
  */
 @ControllerAdvice
+@Slf4j
+@ResponseBody
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public BaseRes handleValidationException(MethodArgumentNotValidException ex) {
@@ -28,6 +32,7 @@ public class GlobalExceptionHandler {
         );
         String message = stringBuilder.toString();
         message = StringUtil.trimEnd(message, ",");
+        log.error(message);
         return BaseRes.failure(message);
     }
 

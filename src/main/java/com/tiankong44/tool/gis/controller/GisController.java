@@ -6,11 +6,12 @@ import com.tiankong44.tool.gis.service.GisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * WGS84坐标系	地球坐标系，国际通用坐标系
@@ -26,14 +27,26 @@ public class GisController {
     @Autowired
     GisService gisService;
 
+
+
     /**
      * WGS84坐标系转GCJ02坐标系
      *
      * @author zhanghao_SMEICS
      * @date 2022/10/21 22:20
      */
-    @RequestMapping("/WGS84ToGCJ02")
-    @ResponseBody
+    @PostMapping("/coordinateTransform")
+    public BaseRes coordinateTransform(@RequestBody @Valid Coordinate coordinate) {
+        return gisService.coordinateTransform(coordinate);
+    }
+
+    /**
+     * WGS84坐标系转GCJ02坐标系
+     *
+     * @author zhanghao_SMEICS
+     * @date 2022/10/21 22:20
+     */
+    @PostMapping("/WGS84ToGCJ02")
     public BaseRes WGS84ToGCJ02(@RequestBody @Valid Coordinate coordinate) {
         return gisService.WGS84ToGCJ02(coordinate);
     }
@@ -44,8 +57,8 @@ public class GisController {
      * @author zhanghao_SMEICS
      * @date 2022/10/21 22:20
      */
-    @ResponseBody
-    @RequestMapping("/GCJ02ToWGS84")
+
+    @PostMapping("/GCJ02ToWGS84")
     public BaseRes GCJ02ToWGS84(@RequestBody @Valid Coordinate coordinate) {
         return gisService.GCJ02ToWGS84(coordinate);
     }
@@ -56,9 +69,9 @@ public class GisController {
      * @author zhanghao_SMEICS
      * @date 2022/10/21 22:20
      */
-    @ResponseBody
-    @RequestMapping("/getDistance")
-    public BaseRes getDistance(@RequestBody String msg) {
-        return gisService.getDistance(msg);
+
+    @PostMapping("/getDistance")
+    public BaseRes getDistance(@RequestBody List<Coordinate> coordinates) {
+        return gisService.getDistance(coordinates);
     }
 }

@@ -1,6 +1,6 @@
 package com.tiankong44.tool.test.service;
 
-import com.tiankong44.tool.config.db.EnumDataSourceType;
+import com.tiankong44.tool.config.db.DataSourceTypeEnum;
 import com.tiankong44.tool.customAnnotation.TargetDataSource;
 import com.tiankong44.tool.mapper.slave.TestMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class TestService {
     @Autowired
     TestMapper testMapper;
 
-    @TargetDataSource(EnumDataSourceType.SLAVE)
+    @TargetDataSource(DataSourceTypeEnum.SLAVE)
     public int test() {
         return testMapper.test();
 

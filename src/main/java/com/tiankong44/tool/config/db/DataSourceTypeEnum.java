@@ -5,7 +5,7 @@ package com.tiankong44.tool.config.db;
  * @Author zhanghao_SMEICS
  * @Date 2022/10/21  15:07
  **/
-public enum EnumDataSourceType {
+public enum DataSourceTypeEnum {
     MASTER,
 
     SLAVE;

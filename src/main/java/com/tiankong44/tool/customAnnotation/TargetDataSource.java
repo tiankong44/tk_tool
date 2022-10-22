@@ -1,6 +1,6 @@
 package com.tiankong44.tool.customAnnotation;
 
-import com.tiankong44.tool.config.db.EnumDataSourceType;
+import com.tiankong44.tool.config.db.DataSourceTypeEnum;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TargetDataSource {
-    EnumDataSourceType value() default EnumDataSourceType.MASTER;
+    DataSourceTypeEnum value() default DataSourceTypeEnum.MASTER;
 }

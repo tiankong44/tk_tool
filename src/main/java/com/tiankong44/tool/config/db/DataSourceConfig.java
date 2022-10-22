@@ -55,8 +55,8 @@ public class DataSourceConfig {
         dynamicDataSource.setDefaultTargetDataSource(masterDataSource());
         // 配置多数据源
         Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put(EnumDataSourceType.MASTER.name(), masterDataSource());
-        dataSourceMap.put(EnumDataSourceType.SLAVE.name(), slaveDataSource());
+        dataSourceMap.put(DataSourceTypeEnum.MASTER.name(), masterDataSource());
+        dataSourceMap.put(DataSourceTypeEnum.SLAVE.name(), slaveDataSource());
         dynamicDataSource.setTargetDataSources(dataSourceMap);
         return dynamicDataSource;
     }

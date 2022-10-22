@@ -1,6 +1,9 @@
 package com.tiankong44.tool.aop;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
+import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
 import com.tiankong44.tool.base.entity.BaseRes;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,7 +14,13 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Description :日志切面，记录接口出参入参
@@ -45,7 +54,7 @@ public class LogAspect {
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof String) {
                 bf.append(args[i]);
-            }  else if (args[i] instanceof Object) {
+            } else if (args[i] instanceof Object) {
                 bf.append(JSONObject.toJSON(args[i]).toString());
             }
         }
@@ -81,14 +90,20 @@ public class LogAspect {
         }
         methodSignature = (MethodSignature) signature;
         Object o = joinPoint.getTarget();//获取连接点所在的目标对象
-        Object[] args = joinPoint.getArgs();//获取参数
+
         Method currentMethod = methodSignature.getMethod();
         String funcName = o.getClass() + "." + currentMethod.getName();
         StringBuffer bf = new StringBuffer(funcName + "方法入参：");
+        Object[] args = joinPoint.getArgs();
+
+        //过滤后序列化无异常
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof String) {
                 bf.append(args[i]);
             } else if (args[i] instanceof Object) {
+                if (args[i] instanceof HttpServletRequest || args[i] instanceof HttpServletResponse) {
+                    continue;
+                }
                 bf.append(JSONObject.toJSON(args[i]).toString());
             }
         }
