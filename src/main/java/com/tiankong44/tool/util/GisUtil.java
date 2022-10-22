@@ -1,7 +1,9 @@
 package com.tiankong44.tool.util;
 
+import com.tiankong44.tool.exception.customException.DifferentCoordinateException;
 import com.tiankong44.tool.gis.entity.Coordinate;
 import com.tiankong44.tool.gis.entity.CoordinateTypeEnum;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,6 +13,7 @@ import java.util.List;
  * @author zhanghao_SMEICS
  * @date 2022-10-21 22:03
  */
+@Component
 public class GisUtil {
     private final static double a = 6378245.0;
     private final static double pi = 3.1415926535897932384626;
@@ -42,29 +45,37 @@ public class GisUtil {
     }
 
     /**
-     * 计算地球上任意两点(经纬度)距离
+     * 计算地球上任意两点(经纬度)距离 (同类型坐标系)
      *
      * @param startCoordinate 起始点
      * @param endCoordinate   结束点
      * @return 返回距离 单位：米
      */
-    public static double distance(Coordinate startCoordinate, Coordinate endCoordinate) {
+    public static double distance(Coordinate startCoordinate, Coordinate endCoordinate) throws DifferentCoordinateException {
+        if (startCoordinate.getCoordinateType().equals(endCoordinate.getCoordinateType())) {
+            throw new DifferentCoordinateException("坐标系不是同一类型(Coordinate systems are not of the same type)",Thread.currentThread().getStackTrace()[1].getClassName());
+        }
         return distance(startCoordinate.getLongitude(), startCoordinate.getLatitude(), endCoordinate.getLongitude(), endCoordinate.getLatitude());
     }
 
     /**
-     * 计算地球上任意两点(经纬度)距离
+     * 计算地球上任意两点(经纬度)距离  (同类型坐标系)
      *
      * @param coordinates
      * @return 返回距离 单位：米
      */
-    public static double distance(List<Coordinate> coordinates) {
+    public static double distance(List<Coordinate> coordinates) throws DifferentCoordinateException {
         double distance = 0;
         if (coordinates != null && coordinates.size() > 1) {
             for (int i = 0; i < coordinates.size() - 1; i++) {
                 Coordinate startCoordinate = coordinates.get(i);
                 Coordinate endCoordinate = coordinates.get(i + 1);
+                if (!startCoordinate.getCoordinateType().equals(endCoordinate.getCoordinateType())) {
+                    throw new DifferentCoordinateException("坐标系不是同一类型(Coordinate systems are not of the same type)",Thread.currentThread().getStackTrace()[1].getClassName());
+                }
                 distance += distance(startCoordinate.getLongitude(), startCoordinate.getLatitude(), endCoordinate.getLongitude(), endCoordinate.getLatitude());
+
+
             }
 
         }
@@ -286,7 +297,7 @@ public class GisUtil {
     public static Coordinate bd09ToGps84(Coordinate coordinate) {
         double[] gcj02 = bd09ToGcj02(coordinate.getLongitude(), coordinate.getLatitude());
         double[] gps84 = gcj02ToGps84(gcj02[0], gcj02[1]);
-        return new Coordinate(gps84[0],gps84[1],coordinate.getElevation(), CoordinateTypeEnum.GPS84.value);
+        return new Coordinate(gps84[0], gps84[1], coordinate.getElevation(), CoordinateTypeEnum.GPS84.value);
     }
 
     /***

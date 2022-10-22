@@ -1,6 +1,7 @@
 package com.tiankong44.tool.gis.service.impl;
 
 import com.tiankong44.tool.base.entity.BaseRes;
+import com.tiankong44.tool.exception.customException.DifferentCoordinateException;
 import com.tiankong44.tool.gis.entity.Coordinate;
 import com.tiankong44.tool.gis.entity.CoordinateTypeEnum;
 import com.tiankong44.tool.gis.service.GisService;
@@ -51,7 +52,7 @@ public class GisServiceImpl implements GisService {
      * @date 2022/10/21 22:20
      */
     @Override
-    public BaseRes getDistance(List<Coordinate> coordinates) {
+    public BaseRes getDistance(List<Coordinate> coordinates) throws DifferentCoordinateException {
         if (coordinates != null && coordinates.size() > 1) {
             return BaseRes.success(GisUtil.distance(coordinates));
         } else {

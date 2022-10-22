@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
 import com.tiankong44.tool.base.entity.BaseRes;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -12,6 +13,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +40,7 @@ public class LogAspect {
     }
 
     @Around("controllerCut()")
-    public Object interceptor(ProceedingJoinPoint joinPoint) {
+    public Object interceptor(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         Signature signature = joinPoint.getSignature();//获取连接点的方法签名对象
         MethodSignature methodSignature = null;
@@ -60,18 +62,16 @@ public class LogAspect {
         }
         log.info(bf.toString());
         Object retObj = null;
-        try {
-            retObj = joinPoint.proceed(args);//通过反射的方法执行切面切到的方法实体,如果有传参则不使用原来的参数进行方法,如果不调用此方法，那被切的面后面的代码不会被执行
-            if (retObj != null && retObj instanceof String) {
-                StringBuilder retStr = new StringBuilder(funcName + "方法回参：").append(retObj);
-                log.info(retStr.toString());
-            } else if (retObj instanceof BaseRes) {
-                StringBuilder retStr = new StringBuilder(funcName + "方法回参：").append(JSONObject.toJSONString(retObj));
-                log.info(retStr.toString());
-            }
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
+
+        retObj = joinPoint.proceed(args);//通过反射的方法执行切面切到的方法实体,如果有传参则不使用原来的参数进行方法,如果不调用此方法，那被切的面后面的代码不会被执行
+        if (retObj != null && retObj instanceof String) {
+            StringBuilder retStr = new StringBuilder(funcName + "方法回参：").append(retObj);
+            log.info(retStr.toString());
+        } else if (retObj instanceof BaseRes) {
+            StringBuilder retStr = new StringBuilder(funcName + "方法回参：").append(JSONObject.toJSONString(retObj));
+            log.info(retStr.toString());
         }
+
         log.info(funcName + "接口执行时间:" + (System.currentTimeMillis() - startTime) + " ms");
         return retObj;
     }

@@ -1,8 +1,11 @@
 package com.tiankong44.tool.gis.controller;
 
 import com.tiankong44.tool.base.entity.BaseRes;
+import com.tiankong44.tool.exception.customException.DifferentCoordinateException;
 import com.tiankong44.tool.gis.entity.Coordinate;
 import com.tiankong44.tool.gis.service.GisService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +26,7 @@ import java.util.List;
  */
 @RestController("/gis")
 @Validated
+@Tag(name = "地理位置坐标")
 public class GisController {
     @Autowired
     GisService gisService;
@@ -36,6 +40,7 @@ public class GisController {
      * @date 2022/10/21 22:20
      */
     @PostMapping("/coordinateTransform")
+    @Operation(summary = "WGS84坐标系转GCJ02坐标系")
     public BaseRes coordinateTransform(@RequestBody @Valid Coordinate coordinate) {
         return gisService.coordinateTransform(coordinate);
     }
@@ -47,6 +52,7 @@ public class GisController {
      * @date 2022/10/21 22:20
      */
     @PostMapping("/WGS84ToGCJ02")
+    @Operation(summary = "WGS84坐标系转GCJ02坐标系")
     public BaseRes WGS84ToGCJ02(@RequestBody @Valid Coordinate coordinate) {
         return gisService.WGS84ToGCJ02(coordinate);
     }
@@ -59,6 +65,7 @@ public class GisController {
      */
 
     @PostMapping("/GCJ02ToWGS84")
+    @Operation(summary = "GCJ02坐标系转WGS84坐标系")
     public BaseRes GCJ02ToWGS84(@RequestBody @Valid Coordinate coordinate) {
         return gisService.GCJ02ToWGS84(coordinate);
     }
@@ -71,7 +78,8 @@ public class GisController {
      */
 
     @PostMapping("/getDistance")
-    public BaseRes getDistance(@RequestBody List<Coordinate> coordinates) {
+    @Operation(summary = "获取两点或多个点之间的距离")
+    public BaseRes getDistance(@RequestBody List<Coordinate> coordinates) throws DifferentCoordinateException {
         return gisService.getDistance(coordinates);
     }
 }

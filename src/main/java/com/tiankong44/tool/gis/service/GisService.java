@@ -1,6 +1,7 @@
 package com.tiankong44.tool.gis.service;
 
 import com.tiankong44.tool.base.entity.BaseRes;
+import com.tiankong44.tool.exception.customException.DifferentCoordinateException;
 import com.tiankong44.tool.gis.entity.Coordinate;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -31,7 +32,7 @@ public interface GisService {
      * @author zhanghao_SMEICS
      * @date 2022/10/21 22:20
      */
-    BaseRes getDistance(List<Coordinate> coordinates);
+    BaseRes getDistance(List<Coordinate> coordinates) throws DifferentCoordinateException;
 
     /**
      * 坐标系转换、根据坐标系类型，转换为其他类型

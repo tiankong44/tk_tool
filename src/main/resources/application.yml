@@ -31,3 +31,10 @@ logging:
     root: info
     com.tiankong44.tool.mapper: debug
 
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  #包扫描路径
+  packages-to-scan: com.tiankong44.tool
