@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,7 +21,8 @@ import java.util.List;
  * @author zhanghao_SMEICS
  * @date 2022-10-21 21:45
  */
-@RestController("/gis")
+@RestController()
+@RequestMapping("/str")
 @Validated
 @Tag(name = "地理位置坐标")
 public class GisController {
